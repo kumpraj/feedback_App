@@ -7,6 +7,7 @@ import FeedbackStats from "./components/FeedbackStats";
 import FeedbackData from "./data/FeedbackData";
 import Feedbackform from "./components/Feedbackform";
 import AboutPage from "./Pages/AboutPage";
+import { FeedbackProvider } from "./context/FeedbackContext";
 import AboutIconLink from "./components/AboutIconLink";
 import Post from "./components/Post";
 
@@ -28,25 +29,27 @@ function App() {
     }
     
     return(
-        <Router>
-          <Header/>
-            <div className="container">
-                <Routes>
-                    <Route exact path="/" element={
-                        <>
-                        <Feedbackform handleAdd={addFeedback}/>
-                        <FeedbackStats feedback={feedback}/>
-                        <FeedbackList feedback= {feedback} handleDelete = {deleteFeedback}/>
-                        </>
-                    }/>
+        <FeedbackProvider>
+            <Router>
+                <Header/>
+                    <div className="container">
+                        <Routes>
+                            <Route exact path="/" element={
+                                <>
+                                <Feedbackform handleAdd={addFeedback}/>
+                                <FeedbackStats feedback={feedback}/>
+                                <FeedbackList feedback= {feedback} handleDelete = {deleteFeedback}/>
+                                </>
+                            }/>
 
-                    <Route path="/about" element={<AboutPage/>}/>
-                    <Route path="/post/*" element={<Post/>}/>
-                </Routes>
-                <AboutIconLink/>
+                            <Route path="/about" element={<AboutPage/>}/>
+                            <Route path="/post/*" element={<Post/>}/>
+                        </Routes>
+                        <AboutIconLink/>
 
-            </div>            
-        </Router>
+                    </div>            
+            </Router>
+        </FeedbackProvider>
     )
 }
 
