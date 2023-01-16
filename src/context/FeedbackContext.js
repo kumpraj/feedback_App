@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import {v4 as uuidv4} from 'uuid';
+
 
 const FeedBackContext = createContext();
 
@@ -12,19 +12,16 @@ export const FeedbackProvider = ({ children }) => {
 
     //  to fetch feedback from json-server onloading
     useEffect(() => {
-        fetchFeedbaack()
+        fetchFeedback()
     },[])
 
-    //  Fetch feedback
-    const fetchFeedbaack = async () => {
-        const response = await fetch(`http://localhost:5000/feedback?_sort=id&_order=desc`);
+    // Fetch feedback
+    const fetchFeedback = async () => {
+        const response = await fetch(`http://localhost:5000/feedback?_sort=id&_order=desc`)
+        const data = await response.json()
 
-        const data = await response.json();
-
-        setFeedback(data);
-        
-        // once the data is loaded -- turn off the gif
-        setIsLoading(false);
+        setFeedback(data)
+        setIsLoading(false)
     }
 
     // state to manage edit functionality
@@ -33,10 +30,19 @@ export const FeedbackProvider = ({ children }) => {
         edit: false
     })
 
-    //  add feedback
-    const addFeedback = (newFeedback) => {
-        newFeedback.id = uuidv4();
-        setFeedback([newFeedback,...feedback]);
+    // Add feedback
+    const addFeedback = async (newFeedback) => {
+        const response = await fetch('http://localhost:5000/feedback', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newFeedback),
+        })
+
+        const data = await response.json()
+
+        setFeedback([data, ...feedback])
     }
 
     // delete feedback
