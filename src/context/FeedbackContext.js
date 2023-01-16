@@ -5,7 +5,9 @@ const FeedBackContext = createContext();
 
 
 export const FeedbackProvider = ({ children }) => {
-    
+    //  for using spinner while loading
+    const [isLoading, setIsLoading] = useState(true);
+
     const [feedback, setFeedback] = useState([]);
 
     //  to fetch feedback from json-server onloading
@@ -20,6 +22,9 @@ export const FeedbackProvider = ({ children }) => {
         const data = await response.json();
 
         setFeedback(data);
+        
+        // once the data is loaded -- turn off the gif
+        setIsLoading(false);
     }
 
     // state to manage edit functionality
@@ -61,6 +66,7 @@ export const FeedbackProvider = ({ children }) => {
     return <FeedBackContext.Provider value={{
         feedback,
         feedbackEdit,
+        isLoading,
         deleteFeedback,
         addFeedback,
         editFeedback,
