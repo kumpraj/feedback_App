@@ -16,13 +16,11 @@ export const FeedbackProvider = ({ children }) => {
     },[])
 
     // Fetch feedback
-    const fetchFeedback = () => {
-        fetch(`/feedback?_sort=id&_order=desc`)
-        .then((res) => res.json())
-        .then((data) => setFeedback(data))
-        
+    const fetchFeedback = async () => {
+        const response = await fetch(`/feedback?_sort=id&_order=desc`)
+        const data = await response.json()
 
-        // setFeedback(data)
+        setFeedback(data)
         setIsLoading(false)
     }
 
@@ -33,20 +31,18 @@ export const FeedbackProvider = ({ children }) => {
     })
 
     // Add feedback
-    const addFeedback = (newFeedback) => {
-        const response = fetch('/feedback', {
+    const addFeedback = async (newFeedback) => {
+        const response = await fetch('/feedback', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(newFeedback),
         })
-        .then((res) => res.json())
-        .then((data) => setFeedback([data, ...feedback]))
 
-        // const data = await response.json()
+        const data = await response.json()
 
-        // setFeedback([data, ...feedback])
+        setFeedback([data, ...feedback])
     }
 
     // delete feedback
